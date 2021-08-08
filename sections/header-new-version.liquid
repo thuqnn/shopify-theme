@@ -39,3 +39,29 @@
     </div>
   </div>
 </nav>
+
+:{% schema %}
+{
+ "name": "Colors",
+ "settings": [
+   {
+    "type": "color",
+    "id": "header_background",
+    "label": "Background Color for Header",
+    "default": "#FFFFFF"
+   },
+   {
+     "type": "color",
+     "id": "header_color_text",
+     "label": "Color Text Header",
+     "default": "#212529"
+   }
+ ],
+ "presets": [
+   {
+     "category": "Header",
+     "name":"Color Header"
+   }
+ ]
+}
+{% endschema %}
