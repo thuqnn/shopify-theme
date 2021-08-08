@@ -17,14 +17,14 @@
       {
         "type": "color",
         "id": "colors_solid_button_labels",
-        "default": "#f90000",
+        "default": "#fffff",
         "label": "t:settings_schema.colors.settings.colors_solid_button_labels.label",
         "info": "t:settings_schema.colors.settings.colors_solid_button_labels.info"
       },
       {
         "type": "color",
         "id": "colors_accent_1",
-        "default": "#445958",
+        "default": "#00000",
         "label": "t:settings_schema.colors.settings.colors_accent_1.label",
         "info": "t:settings_schema.colors.settings.colors_accent_1.info"
       },
