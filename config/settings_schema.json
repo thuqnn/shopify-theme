@@ -17,14 +17,14 @@
       {
         "type": "color",
         "id": "colors_solid_button_labels",
-        "default": "#fffff",
+        "default": "#FFFFFF",
         "label": "t:settings_schema.colors.settings.colors_solid_button_labels.label",
         "info": "t:settings_schema.colors.settings.colors_solid_button_labels.info"
       },
       {
         "type": "color",
         "id": "colors_accent_1",
-        "default": "#00000",
+        "default": "#445958",
         "label": "t:settings_schema.colors.settings.colors_accent_1.label",
         "info": "t:settings_schema.colors.settings.colors_accent_1.info"
       },
@@ -256,6 +256,17 @@
         "id": "currency_code_enabled",
         "label": "t:settings_schema.currency_format.settings.currency_code_enabled.label",
         "default": true
+      }
+    ]
+  },
+  {
+    "name": "Navigational Bar Color Setting",
+    "settings":[
+      {
+        "type": "color",
+        "id": "navbar_color",
+        "label": "NavBar Background Color",
+        "default": "#000"
       }
     ]
   }
