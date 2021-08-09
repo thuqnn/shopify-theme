@@ -1,0 +1,41 @@
+<section class="container">
+    {% for product in collections[section.settings.featured_collection].products %}
+        <div class="card" style="width: 18rem;">
+            <img loading="lazy" src="{{ product.featured_media.preview_image | image_url }}" class="card-img-top" alt="{{ product.title}}">
+            <div class="card-body">
+            <h5 class="card-title"><a href="{{ product.url }}">{{ product.title }}</a></h5>
+            <strong>{{ product.price | money }}</strong>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+      
+    {% endfor %}
+</section>
+
+
+{% schema %}
+{
+    "name": "New Featured Collection",
+    "class": "featured-collection-section",
+    "settings": [
+        {
+            "type": "collection",
+            "id": "featured_collection",
+            "label": "Collection"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Collection Title "
+        }
+    ],
+    "presets": [
+        {
+            "category": "New Collection",
+            "name":"New Featured Collection"
+        }
+    ]
+}
+{% endschema %}
