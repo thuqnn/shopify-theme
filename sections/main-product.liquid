@@ -6,9 +6,15 @@
   <div class="row">
     <div class="col-md-6 col-12">
       <img loading="lazy" src="{{ product_image | img_url: 'master' }}" alt="{{ product_image.alt }}" class="img-fluid" id="ProductMainImage">
-      {% for image in product.images %}
-         <img src="{{ image.src | img_url: 'medium' }}" alt=" {{ image.alt }}">
-      {% endfor %}
+      <div class="container">
+        <div class="row d-flex">
+          {% for image in product.images %}
+          <div class="col-md-2">
+            <img src="{{ image.src | img_url: 'medium' }}" alt=" {{ image.alt }}" class="w-100">
+          </div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
     <div class="col-md-6 col-12">
        <h1>{{ product.title }}</h1>
@@ -33,8 +39,25 @@
         <div class="mb-3">
           <input type="number" name="quantity" id="Quantity" value="1" min="1">
         </div>
-        <button type="submit" name="add" id="AddToCart" class="btn btn-secondary btn-lg w-100">Add To Cart</button>
-       {% endform %}
+        <button type="submit" name="add" id="AddToCart" class="btn btn-secondary btn-lg w-100 rounded-0 my-4">Add To Cart</button>
+        {% if section.settings.dynamic_button_checkbox == true %}
+          {{ form | payment_button }}
+        {% endif %}
+        {% endform %}
     </div>
   </div>
 </div>
+
+{% schema %}
+{
+  "name": "Product Pages",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "dynamic_button_checkbox",
+      "label": "Enable Dynamic Button",
+      "default": false
+    }
+  ]
+}
+{% endschema %}
