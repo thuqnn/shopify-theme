@@ -3,13 +3,9 @@
 <article class="article-template" itemscope itemtype="http://schema.org/BlogPosting">
   {%- for block in section.blocks -%}
     {%- case block.type -%}
-      {%- when '@app' -%}
-        <div class="page-width page-width--narrow">
-          {% render block %}
-        </div>
       {%- when 'featured_image'-%}
         {%- if article.image -%}
-          <div class="article-template__hero-container" {{ block.shopify_attributes }}>
+          <div class="article-template__hero-container">
             <div class="article-template__hero-{{ block.settings.image_height }} media"
               itemprop="image"
               {% if block.settings.image_height == 'adapt' and article.image %} style="padding-bottom: {{ 1 | divided_by: article.image.aspect_ratio | times: 100 }}%;"{% endif %}
@@ -31,7 +27,7 @@
         {%- endif -%}
 
         {%- when 'title'-%}
-          <header class="page-width page-width--narrow" {{ block.shopify_attributes }}>
+          <header class="page-width page-width--narrow">
             <h1 class="article-template__title" itemprop="headline">{{ article.title | escape }}</h1>
             {%- if block.settings.blog_show_date -%}
               <span class="circle-divider caption-with-letter-spacing" itemprop="dateCreated pubdate datePublished">{{ article.published_at | time_tag: format: 'month_year' }}</span>
@@ -44,52 +40,20 @@
           </header>
 
         {%- when 'content'-%}
-          <div class="article-template__content page-width page-width--narrow rte" itemprop="articleBody" {{ block.shopify_attributes }}>
+          <div class="article-template__content page-width page-width--narrow rte" itemprop="articleBody">
               {{ article.content }}
           </div>
 
-        {%- when 'share' -%}
-          <div class="article-template__social-sharing page-width page-width--narrow" {{ block.shopify_attributes }}>
-            <share-button class="share-button" {{ block.shopify_attributes }}>
-              <button class="share-button__button button button--tertiary hidden">
-                {% render 'icon-share' %}
-                {{ 'general.share.share' | t }}
-              </button>
-              <details>
-                <summary class="share-button__button button button--tertiary">
-                  {% render 'icon-share' %}
-                  {{ 'general.share.share' | t }}
-                </summary>
-                <div class="share-button__fallback">
-                  <div class="field">
-                    <input type="text"
-                          class="field__input"
-                          id="url"
-                          value="{{ shop.url | append: article.url }}"
-                          placeholder="{{ 'general.share.share_url' | t }}"
-                          onclick="this.select();"
-                          readonly
-                    >
-                    <label class="field__label" for="url">{{ 'general.share.share_url' | t }}</label>
-                  </div>
-                  <button class="button button--tertiary">
-                    {% render 'icon-clipboard' %}
-                    {{ 'general.share.copy_to_clipboard' | t }}
-                  </button>
-                  <span id="ShareMessage-{{ section.id }}" class="share-button__message hidden" role="status" aria-hidden="true">
-                    {{ 'general.share.success_message' | t }}
-                  </span>
-                </div>
-              </details>
-            </share-button>
-            <script src="{{ 'share.js' | asset_url }}" defer="defer"></script>
+        {%- when 'social_sharing'-%}
+          <div class="article-template__social-sharing page-width page-width--narrow">
+            {% render 'social-sharing', share_title: article.title, share_permalink: article.url, share_image: article.image %}
           </div>
     {%- endcase -%}
   {%- endfor -%}
 
   <div class="element-margin center">
-    <a href="{{ blog.url }}" class="article-template__link link animate-arrow{% if blog.comments_enabled? == false %} spaced-section{% endif %}">
-      <span class="icon-wrap">{% render 'icon-arrow' %}</span>
+    <a href="{{ blog.url }}" class="article-template__link link{% if blog.comments_enabled? == false %} spaced-section{% endif %}">
+      {% render 'icon-arrow' %}
       {{ 'blogs.article.back_to_blog' | t: title: blog.title }}
     </a>
   </div>
@@ -246,9 +210,6 @@
   "tag": "section",
   "blocks": [
     {
-      "type": "@app"
-    },
-    {
       "type": "featured_image",
       "name": "t:sections.main-article.blocks.featured_image.name",
       "limit": 1,
@@ -301,19 +262,9 @@
       "limit": 1
     },
     {
-      "type": "share",
-      "name": "t:sections.main-article.blocks.share.name",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "t:sections.main-article.blocks.share.settings.featured_image_info.content"
-        },
-        {
-          "type": "paragraph",
-          "content": "t:sections.main-article.blocks.share.settings.title_info.content"
-        }
-      ]
+      "type": "social_sharing",
+      "name": "t:sections.main-article.blocks.social_sharing.name",
+      "limit": 1
     }
   ]
 }

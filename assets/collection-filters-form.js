@@ -10,6 +10,8 @@ class CollectionFiltersForm extends HTMLElement {
 
     this.querySelector('form').addEventListener('input', this.debouncedOnSubmit.bind(this));
     window.addEventListener('popstate', this.onHistoryChange.bind(this));
+
+    this.bindActiveFacetButtonEvents();
   }
 
   onSubmitHandler(event) {
@@ -22,7 +24,7 @@ class CollectionFiltersForm extends HTMLElement {
   onActiveFilterClick(event) {
     event.preventDefault();
     this.toggleActiveFacets();
-    this.renderPage(new URL(event.currentTarget.href).searchParams.toString());
+    this.renderPage(new URL(event.target.href).searchParams.toString());
   }
 
   onHistoryChange(event) {
@@ -45,14 +47,14 @@ class CollectionFiltersForm extends HTMLElement {
       const filterDataUrl = element => element.url === url;
 
       this.filterData.some(filterDataUrl) ?
-        this.renderSectionFromCache(filterDataUrl, event) :
-        this.renderSectionFromFetch(url, event);
+        this.renderSectionFromCache(filterDataUrl, section, event) :
+        this.renderSectionFromFetch(url, section, event);
     });
 
     if (updateURLHash) this.updateURLHash(searchParams);
   }
 
-  renderSectionFromFetch(url, event) {
+  renderSectionFromFetch(url, section, event) {
     fetch(url)
       .then(response => response.text())
       .then((responseText) => {
@@ -63,7 +65,7 @@ class CollectionFiltersForm extends HTMLElement {
       });
   }
 
-  renderSectionFromCache(filterDataUrl, event) {
+  renderSectionFromCache(filterDataUrl, section, event) {
     const html = this.filterData.find(filterDataUrl).html;
     this.renderFilters(html, event);
     this.renderProductGrid(html);
@@ -91,7 +93,7 @@ class CollectionFiltersForm extends HTMLElement {
     });
 
     this.renderActiveFacets(parsedHTML);
-    this.renderAdditionalElements(parsedHTML);
+    this.renderMobileElements(parsedHTML);
 
     if (countsToRender) this.renderCounts(countsToRender, event.target.closest('.js-filter'));
   }
@@ -105,11 +107,12 @@ class CollectionFiltersForm extends HTMLElement {
       document.querySelector(selector).innerHTML = activeFacetsElement.innerHTML;
     })
 
+    this.bindActiveFacetButtonEvents();
     this.toggleActiveFacets(false);
   }
 
-  renderAdditionalElements(html) {
-    const mobileElementSelectors = ['.mobile-facets__open', '.mobile-facets__count', '.sorting'];
+  renderMobileElements(html) {
+    const mobileElementSelectors = ['.mobile-facets__open', '.mobile-facets__count'];
 
     mobileElementSelectors.forEach((selector) => {
       document.querySelector(selector).innerHTML = html.querySelector(selector).innerHTML;
@@ -127,6 +130,12 @@ class CollectionFiltersForm extends HTMLElement {
       if (sourceElement && targetElement) {
         target.querySelector(selector).outerHTML = source.querySelector(selector).outerHTML;
       }
+    });
+  }
+
+  bindActiveFacetButtonEvents() {
+    document.querySelectorAll('.js-facet-remove').forEach((element) => {
+      element.addEventListener('click', this.onActiveFilterClick, { once: true });
     });
   }
 
@@ -181,16 +190,3 @@ class PriceRange extends HTMLElement {
 }
 
 customElements.define('price-range', PriceRange);
-
-class FacetRemove extends HTMLElement {
-  constructor() {
-    super();
-    this.querySelector('a').addEventListener('click', (event) => {
-      event.preventDefault();
-      const form = this.closest('collection-filters-form') || document.querySelector('collection-filters-form');
-      form.onActiveFilterClick(event);
-    });
-  }
-}
-
-customElements.define('facet-remove', FacetRemove);
