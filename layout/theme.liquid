@@ -92,8 +92,7 @@
       }
     {% endstyle %}
 
-   {% comment %} {{ 'base.css' | asset_url | stylesheet_tag }} {% endcomment %}
-    {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
 
     {%- unless settings.type_body_font.system? -%}
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
@@ -109,10 +108,9 @@
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ "accessibility.skip_to_text" | t }}
     </a>
-    {% section 'announcement-bar' %}
-   {% comment %}   {% section 'header' %} {% endcomment %}   
-    {% section 'header-new-version' %}  
 
+    {% section 'announcement-bar' %}
+    {% section 'header' %}
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
@@ -123,8 +121,7 @@
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
     </ul>
-    
-   <script src="{{ 'bootstrap.min.js' | asset_url }}" defer="defer"></script>
+
     <script>
       window.routes = {
         cart_add_url: '{{ routes.cart_add_url }}',

@@ -258,16 +258,5 @@
         "default": true
       }
     ]
-  },
-  {
-    "name": "Navigational Bar Color Setting",
-    "settings":[
-      {
-        "type": "color",
-        "id": "navbar_color",
-        "label": "NavBar Background Color",
-        "default": "#000"
-      }
-    ]
   }
 ]
